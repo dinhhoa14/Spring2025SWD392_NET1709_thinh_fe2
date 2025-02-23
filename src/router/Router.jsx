@@ -17,8 +17,10 @@ import RegisterProfileChildPage from "@pages/RegisterProfileChildPage/index.jsx"
 import BlogPage from "@pages/BlogPage/index.jsx";
 import ProtectedRoute from "@containers/auth/ProtectedRoute/index.jsx";
 import NotFound from "@containers/NotFound/index.jsx";
+import LayoutStaff from "@layouts/LayoutStaff.jsx";
+import Blogs from "@containers/staff/Blog/index.jsx";
+import BlogDetail from "@containers/BlogDetail/index.jsx";
 import ServiceList from "@containers/ServiceList/index.jsx";
-
 
 const user = localStorage.getItem("userDataNhanAi");
 const userRole = JSON.parse(user || '{}').role || 'GUEST';
@@ -38,6 +40,7 @@ const Router = createBrowserRouter(
         { path: routes.service, element: <ServiceList /> },
         { path: routes.aboutUs, element: <AboutUsPage /> },
         { path: routes.blog, element: <BlogPage /> },
+        { path: routes.blogDetail, element: <BlogDetail /> },
       ],
     },
     {
@@ -60,6 +63,11 @@ const Router = createBrowserRouter(
       path: routes.admin.dashboard,
       element: <ProtectedRoute role={userRole} allowedRoles={['ADMIN', 'MANAGER']} ><LayoutAdmin /></ProtectedRoute>,
       children: [{ path: routes.admin.dashboard, element: <DashBoardPage /> }],
+    },
+    {
+      path: routes.staff.blog.split("/")[1],
+      element: <ProtectedRoute role={userRole} allowedRoles={['STAFF']} ><LayoutStaff /></ProtectedRoute>,
+      children: [{ path: routes.staff.blog.split("/")[2], element: <Blogs /> }],
     },
   ],
   { basename: import.meta.env.BASE_URL }

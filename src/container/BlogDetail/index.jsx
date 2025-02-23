@@ -1,0 +1,41 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { blogService } from "@src/services/blogService.js";
+import { CircularProgress } from "@mui/material";
+
+export default function BlogDetail() {
+  const { id } = useParams();
+  const [blog, setBlog] = useState(null);
+
+  useEffect(() => {
+    const fetchBlogDetail = async () => {
+      try {
+        const response = await blogService.getDetailBlog(id);
+        setBlog(response);
+        console.log(response.content);
+      } catch (error) {
+        console.error("Error fetching blog detail:", error);
+      }
+    };
+
+    fetchBlogDetail();
+  }, [id]);
+
+  return (
+    <div className="container mx-auto p-4">
+      {blog ? (
+        <div className="text-left flex items-center justify-center">
+          {/* <h1 className="text-2xl font-bold">{blog.title}</h1> */}
+          <div
+            className="prose "
+            dangerouslySetInnerHTML={{ __html: blog.content }}
+          />
+        </div>
+      ) : (
+        <div className="flex h-screen items-center justify-center text-2xl">
+          <CircularProgress size="6rem" />
+        </div>
+      )}
+    </div>
+  );
+}

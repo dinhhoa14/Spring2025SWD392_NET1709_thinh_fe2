@@ -3,7 +3,7 @@ import axiosClient from "./axiosClient";
 
 const authService = {
   login: async (credentials) => {
-    const response = await axiosClient.post("api/auth/signin", credentials);
+    const response = await axiosClient.post("/api/auth/signin", credentials);
     if (response.data.token) {
       localStorage.setItem("accessToken", response.data.token);
     }
@@ -11,8 +11,8 @@ const authService = {
   },
 
   register: async (credentials) => {
-    const response = await axiosClient.post("api/auth/signup", credentials)
-    if (response.code === '201') {
+    const response = await axiosClient.post("/api/auth/signup", credentials);
+    if (response.code === "201") {
       toast.success("🎉 Đăng ký thành công!", {
         position: "top-right",
         autoClose: 3000,
