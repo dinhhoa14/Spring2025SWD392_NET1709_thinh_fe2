@@ -1,9 +1,9 @@
-name: Deploy
+name: Deploy 🕊️
 
 on:
   push:
     branches:
-      - main
+      - main #⚡Adjust to branch you want to deploy
   workflow_dispatch:
     inputs:
       secrets_txt:
@@ -11,63 +11,70 @@ on:
         required: false
 
 jobs:
-  build:
-    name: Build file 🔨
+  build_and_deploy:
+    name: Build & Deploy 🚀
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4.1.7
 
       - name: Import secrets
+        env:
+          SECRETS_CONTEXT: ${{ toJSON(secrets) }}
         run: |
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ -n "${{ inputs.secrets_txt }}" ]; then
-            echo "${{ inputs.secrets_txt }}" > secrets.txt
-          elif [ -f .env.example ]; then
-            cp .env.example secrets.txt
-          fi
-          
-          if [ -f secrets.txt ]; then
-            while IFS='=' read -r key value; do
-              if [[ -n "$key" && -n "$value" && ! "$key" =~ ^# ]]; then
-                echo "$key=$value" >> $GITHUB_ENV
+          # Get keys from .env.example
+          if [ -f .env.example ]; then
+            # Extract keys from .env.example, ignoring comments and empty lines
+            grep -v '^#' .env.example | grep -v '^$' | while IFS='=' read -r key value; do
+              # Trim whitespace from key
+              key=$(echo "$key" | xargs)
+              if [ -n "$key" ]; then
+                # Get secret value using jq
+                secret_value=$(echo "$SECRETS_CONTEXT" | jq -r ".[\"$key\"]")
+                if [ "$secret_value" != "null" ] && [ -n "$secret_value" ]; then
+                  echo "$key=$secret_value" >> $GITHUB_ENV
+                fi
               fi
-            done < secrets.txt
+            done
           fi
 
-      - name: Node setup
-        uses: actions/setup-node@v3
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
 
       - name: Install dependencies
-        uses: bahmutov/npm-install@v1
+        run: |
+          bun install
+          if [ -f bun.lockb ]; then
+            if git ls-files --error-unmatch bun.lockb > /dev/null 2>&1; then
+              if ! git diff --quiet bun.lockb; then
+                git config --global user.name "github-actions[bot]"
+                git config --global user.email "github-actions[bot]@users.noreply.github.com"
+                git add bun.lockb
+                git commit -m "chore: update bun.lockb"
+                git push
+              fi
+            else
+              echo "bun.lockb is not tracked by Git. Adding it..."
+              git config --global user.name "github-actions[bot]"
+              git config --global user.email "github-actions[bot]@users.noreply.github.com"
+              git add bun.lockb
+              git commit -m "chore: add bun.lockb"
+              git push
+            fi
+          else
+            echo "bun.lockb does not exist. Skipping commit."
+          fi
 
       - name: Repository name
         run: echo "VITE_BASE_PATH=/$(echo $GITHUB_REPOSITORY | cut -d '/' -f 2)" >> $GITHUB_ENV
 
       - name: Build project
-        run: npm run build
+        run: bun run build && touch ./dist/.nojekyll #⚡Adjust to your build output folder (dist or out)
 
-      - name: Production files
-        uses: actions/upload-artifact@v4
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4.6.0
         with:
-          name: production-files
-          path: ./dist
-
-  deploy:
-    name: Deploy 🚀
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Artifacts upload
-        uses: actions/download-artifact@v4
-        with:
-          name: production-files
-          path: ./dist
-
-      - name: Deploy gh-pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          publish_branch: public
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: public
+          folder: dist #⚡Adjust to your build output folder (dist or out)
