@@ -7,7 +7,7 @@ import VaccinationGuidePage from "@pages/VaccinationGuide/index.jsx";
 import { CircularProgress } from "@mui/material";
 import HeaderSection from "@components/HeaderSection/index.jsx";
 import BlogSection from "@containers/BlogSection/index.jsx";
-
+import ServiceList from "@containers/ServiceList/index.jsx";
 const Home = () => {
     const [isRendered, setIsRendered] = useState(false);
 
@@ -34,11 +34,11 @@ const Home = () => {
             <div name="aboutUs" className="h-[80vh] flex items-center justify-center">
                 <AboutUsPage />
             </div>
-            <div name="guide" className="h-[80vh] flex items-center justify-center">
+            <div name="guide" className="h-[90vh] flex items-center justify-center">
                 <VaccinationGuidePage />
             </div>
-            <div name="service" className="h-screen flex items-center justify-center">
-                <h1 className="text-4xl font-bold text-center">Service</h1>
+            <div name="service" className="h-[90vh] flex flex-col items-center justify-center">
+                <ServiceList />
             </div>
             <div name="priceList" className="h-screen flex items-center justify-center">
                 <PriceList />
