@@ -22,16 +22,14 @@ const HeaderSection = () => {
     }, []);
 
     return (
-        <header className={`fixed top-0 left-0 w-full bg-[rgb(33,103,221)] shadow-lg transition-transform duration-500 
+        <header className={`md:fixed top-0 left-0 w-full bg-[rgb(33,103,221)] shadow-lg transition-transform duration-500 
             ${showHeader ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"}`}
         >
 
             {/* Navigation Links (Ẩn trên mobile) */}
-            <div className="hidden md:flex w-screen">
+            <div className="hidden sm:flex w-screen">
                 <Navigation />
             </div>
-
-
 
         </header>
     );

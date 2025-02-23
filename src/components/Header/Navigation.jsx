@@ -6,7 +6,7 @@ const sectionNames = {
     aboutUs: { path: routes.aboutUs, label: "Giới thiệu" },
     guide: { path: routes.vaccinationGuide, label: "Hướng dẫn" },
     priceList: { path: routes.notFound, label: "Bảng giá" },
-    service: { path: routes.notFound, label: "Dịch vụ" },
+    service: { path: routes.service, label: "Dịch vụ" },
     blog: { path: routes.blog, label: "Blog" },
     registerVaccination: { path: routes.registerVaccination, label: "Đăng ký tiêm" },
 };

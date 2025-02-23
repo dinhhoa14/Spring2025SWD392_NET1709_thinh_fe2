@@ -5,6 +5,8 @@ import StepIndicator from "./Steper.jsx";
 import SelectChild from "./Step/Step1.jsx";
 import SelectVaccine from "./Step/Step2.jsx";
 import ConfirmInfo from "./Step/Step3.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchVaccines } from "@src/stores/slices/serviceSlice.js";
 
 const RegisterVaccination = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -12,12 +14,15 @@ const RegisterVaccination = () => {
   const [listChild, setListChild] = useState([]);
   const [selectedChild, setSelectedChild] = useState(null);
   const [selectedVaccines, setSelectedVaccines] = useState([]);
-
+  const dispatch = useDispatch();
+  const { vaccines, status, error } = useSelector((state) => state.service);
 
 
   useEffect(() => {
     const Parent = localStorage.getItem("userDataNhanAi");
     const idParent = JSON.parse(Parent || '{}').id;
+
+
     const fetchChildren = async () => {
       try {
         const response = await userService.getAllChildProfile(idParent);
@@ -27,12 +32,18 @@ const RegisterVaccination = () => {
         console.error(error);
       }
     };
+
+    dispatch(fetchVaccines());
     fetchChildren();
   }, []);
+  // console.log(vaccines)
 
   const onSubmit = (data) => {
     console.log({ selectedChild, selectedVaccines, ...data });
   };
+
+  if (status === "loading") return <p>Đang tải...</p>;
+  if (status === "failed") return <p>Lỗi: {error}</p>;
 
   return (
     <div className="flex flex-col items-center my-3 h-screen  p-6">
@@ -41,8 +52,8 @@ const RegisterVaccination = () => {
         <div className="bg-white p-8 rounded-lg shadow-2xl">
           <StepIndicator step={step} />
           {step === 1 && <SelectChild listChild={listChild} setSelectedChild={setSelectedChild} selectedChild={selectedChild} />}
-          {step === 2 && <SelectVaccine selectedVaccines={selectedVaccines} setSelectedVaccines={setSelectedVaccines} />}
-          {step === 3 && <ConfirmInfo selectedChild={selectedChild} selectedVaccines={selectedVaccines} register={register} errors={errors} />}
+          {step === 2 && <SelectVaccine selectedVaccines={vaccines} setSelectedVaccines={setSelectedVaccines} register={register} errors={errors} />}
+          {step === 3 && <ConfirmInfo selectedChild={selectedChild} selectedVaccines={selectedVaccines} />}
         </div>
         <div className="mt-4 flex justify-between">
           {step >= 1 && (

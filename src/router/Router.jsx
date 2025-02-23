@@ -8,7 +8,6 @@ import RegisterPage from "@pages/RegitserPage/index.jsx";
 import routes from "./index.js";
 const RegisterVaccinationPage = lazy(() => import('@pages/RegisterVaccinationPage/index.jsx'))
 import VaccinationGuidePage from "@pages/VaccinationGuide";
-import Counter from "@components/test/Counter";
 import AboutUsPage from "@pages/AboustUsPage/index.jsx";
 import LayoutAdmin from "@layouts/LayoutAdmin.jsx";
 import DashBoardPage from "@pages/adminPage/DashboardPage/index.jsx";
@@ -18,6 +17,7 @@ import RegisterProfileChildPage from "@pages/RegisterProfileChildPage/index.jsx"
 import BlogPage from "@pages/BlogPage/index.jsx";
 import ProtectedRoute from "@containers/auth/ProtectedRoute/index.jsx";
 import NotFound from "@containers/NotFound/index.jsx";
+import ServiceList from "@containers/ServiceList/index.jsx";
 
 
 const user = localStorage.getItem("userDataNhanAi");
@@ -35,7 +35,7 @@ const Router = createBrowserRouter(
           element: <RegisterVaccinationPage />,
         },
         { path: routes.vaccinationGuide, element: <VaccinationGuidePage /> },
-        { path: routes.service, element: <Counter /> },
+        { path: routes.service, element: <ServiceList /> },
         { path: routes.aboutUs, element: <AboutUsPage /> },
         { path: routes.blog, element: <BlogPage /> },
       ],
@@ -55,7 +55,6 @@ const Router = createBrowserRouter(
         { path: routes.user.profile.split("/")[2], element: <UserProfile /> },
         { path: routes.user.registerProfileChild.split("/")[2], element: <RegisterProfileChildPage /> }
       ],
-
     },
     {
       path: routes.admin.dashboard,
