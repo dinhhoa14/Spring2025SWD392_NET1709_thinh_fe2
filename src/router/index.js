@@ -3,20 +3,23 @@ const routes = {
   notFound: "/not-found",
   registerVaccination: "/register-for-vaccination",
   aboutUs: "/About-us",
+  blog: "/blog",
+  blogDetail: "/blog/detail/:id",
+  vaccinationGuide: "/vaccination-guide",
+  service: "/services",
   auth: {
     login: "/auth/login",
     register: "/auth/register",
   },
-
-  vaccinationGuide: "/vaccination-guide",
-  service: "/services",
-  blog: "/blog",
   user: {
     profile: "/user/profile",
     registerProfileChild: "/user/register-profile-child",
   },
   admin: {
-    dashboard: "/admin",
+    dashboard: "/admin/dashboard",
+  },
+  staff: {
+    blog: "/staff/blog",
   },
 };
 

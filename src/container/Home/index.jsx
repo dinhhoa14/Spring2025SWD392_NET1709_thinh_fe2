@@ -3,9 +3,10 @@ import Banner from "@containers/Banner/index.jsx";
 import PriceList from "@containers/PriceList/index.jsx";
 const RegisterVaccinationPage = lazy(() => import("@pages/RegisterVaccinationPage/index.jsx"));
 import AboutUsPage from "@pages/AboustUsPage/index.jsx";
-import BlogPage from "@pages/BlogPage/index.jsx";
 import VaccinationGuidePage from "@pages/VaccinationGuide/index.jsx";
 import { CircularProgress } from "@mui/material";
+import HeaderSection from "@components/HeaderSection/index.jsx";
+import BlogSection from "@containers/BlogSection/index.jsx";
 
 const Home = () => {
     const [isRendered, setIsRendered] = useState(false);
@@ -26,6 +27,7 @@ const Home = () => {
 
     return (
         <div>
+            <HeaderSection />
             <div name="home" className="h-full">
                 <Banner />
             </div>
@@ -46,8 +48,8 @@ const Home = () => {
                     <RegisterVaccinationPage />
                 </div>
             </Suspense>
-            <div name="blog" className="h-screen flex items-center justify-center">
-                <BlogPage />
+            <div name="blog" className="h-[90vh] flex items-center justify-center">
+                <BlogSection />
             </div>
         </div>
     );

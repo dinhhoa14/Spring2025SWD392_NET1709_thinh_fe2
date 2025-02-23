@@ -4,24 +4,32 @@ import routes from "@src/router/index.js";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@src/stores/slices/authSlice";
 
-
-
 const UserActions = () => {
     const dispatch = useDispatch();
     const { isAuthenticated } = useSelector(state => state.auth);
     const navigate = useNavigate();
 
+    const user = JSON.parse(localStorage.getItem("userDataNhanAi") || '{}');
+    const username = user.fullname || "Người dùng";
+    const role = user.role || "GUEST";  // Lấy role từ userData
+    console.log(role)
 
-    const user = localStorage.getItem("userDataNhanAi");
-    const username = JSON.parse(user || '{}').fullname;
+    // Xác định route dựa vào role
+    const roleRoutes = {
+        ADMIN: routes.admin.dashboard,
+        MANAGER: routes.admin.dashboard,
+        STAFF: routes.staff.blog,
+        CUSTOMER: routes.user.profile,
+        GUEST: routes.auth.login
+    };
 
-
+    const profileRoute = roleRoutes[role] || routes.auth.login; // Mặc định về login nếu không xác định được role
 
     const handleLogout = () => {
         dispatch(logout());
         localStorage.clear();
         navigate(routes.auth.login);
-    }
+    };
 
     return (
         <div className="flex flex-col md:flex-row md:gap-4 items-start md:items-center justify-center">
@@ -29,7 +37,7 @@ const UserActions = () => {
                 <div className="flex gap-4 items-center">
                     <div className="flex gap-3 items-center cursor-pointer bg-white py-2 md:px-4 rounded-full">
                         <FaUser className="text-[rgb(33,103,221)]" />
-                        <Link to={routes.user.profile} className="text-lg text-[rgb(33,103,221)] font-medium">
+                        <Link to={profileRoute} className="text-lg text-[rgb(33,103,221)] font-medium">
                             {username}
                         </Link>
                     </div>
