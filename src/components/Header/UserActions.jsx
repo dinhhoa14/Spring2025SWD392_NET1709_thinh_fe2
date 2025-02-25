@@ -9,11 +9,15 @@ const UserActions = () => {
     const { isAuthenticated } = useSelector(state => state.auth);
     const navigate = useNavigate();
 
-    const user = JSON.parse(localStorage.getItem("userDataNhanAi") || '{}');
-    const username = user.fullname || "Người dùng";
-    const role = user.role || "GUEST";  // Lấy role từ userData
-    console.log(role)
+    // const user = JSON.parse(localStorage.getItem("userDataNhanAi") || '{}');
+    // const username = user.fullname || "Người dùng";
 
+
+    const role = localStorage.getItem("userRole") || '{}';
+    // console.log(role)
+
+    const username = localStorage.getItem("userName") || '{}';
+    // console.log(username)
     // Xác định route dựa vào role
     const roleRoutes = {
         ADMIN: routes.admin.dashboard,
