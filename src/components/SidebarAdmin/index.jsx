@@ -11,21 +11,21 @@ const Sidebar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const handleLogout = () => {
-    dispatch(logout());
-    localStorage.clear();
-    navigate(routes.auth.login);
-  };
+        dispatch(logout());
+        localStorage.clear();
+        navigate(routes.auth.login);
+    };
     // Danh sách chức năng với icon và đường dẫn
     const listFunctions = [
-        { name: 'Dashboard', icon: <SiGoogleanalytics size={20} />, path: '/admin' },
+        { name: 'Dashboard', icon: <SiGoogleanalytics size={20} />, path: routes.admin.dashboard },
         { name: 'Tài khoản', icon: <FaUsers size={20} />, path: '/users' },
-        { name: 'Vắc-xin', icon: <FaSyringe size={20} />, path: '/vaccination' },
+        { name: 'Vắc-xin', icon: <FaSyringe size={20} />, path: routes.admin.adminVaccine },
         { name: 'Dịch vụ', icon: <FaClipboardList size={20} />, path: '/service' },
         { name: 'Blog', icon: <FaBlog size={20} />, path: '/blog' },
     ];
 
     return (
-        <div className="h-screen bg-gradient-to-b text-blue-400 shadow-lg flex flex-col">
+        <div className="min-h-screen bg-gradient-to-b text-blue-400 shadow-lg flex flex-col">
             <div className='mt-3'>
                 <div className="flex items-center justify-center gap-2 px-2 cursor-pointer mlg:w-full">
                     <Link to="/">
@@ -53,9 +53,9 @@ const Sidebar = () => {
                 ))}
             </ul>
             <button className="flex items-center justify-center gap-3 w-full p-4 text-xl bg-white text-[rgb(33,103,221)] hover:bg-blue-500 hover:text-white transition duration-300 cursor-pointer" onClick={() => handleLogout()}>
-                      <FaSignOutAlt />
-                      <span>Đăng xuất</span>
-                    </button>
+                <FaSignOutAlt />
+                <span>Đăng xuất</span>
+            </button>
             <div className="p-4 text-center text-sm text-blue-400">© 2024 Nhân Ái</div>
         </div>
     );

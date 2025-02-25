@@ -36,8 +36,7 @@ const Sidebar = () => {
     navigate(routes.auth.login);
   };
 
-  const user = localStorage.getItem("userDataNhanAi");
-  const username = JSON.parse(user || '{}').fullname;
+  const username = localStorage.getItem("userName")
 
   return (
     <div className="min-h-screen sticky top-0 bg-gradient-to-b text-blue-400 shadow-lg flex flex-col">

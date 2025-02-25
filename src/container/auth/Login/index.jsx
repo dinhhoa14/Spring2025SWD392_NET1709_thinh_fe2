@@ -5,7 +5,7 @@ import { loginUser } from "@src/stores/slices/authSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import routes from "@src/router/index.js";
-import { fetchUser } from "@src/stores/slices/authSlice.js";
+// import { fetchUser } from "@src/stores/slices/authSlice.js";
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -16,8 +16,7 @@ const Login = () => {
   const onSubmit = async (data) => {
     dispatch(loginUser(data))
       .unwrap()
-      .then((accessToken) => {
-        dispatch(fetchUser(accessToken));
+      .then((data) => {
         toast.success("🎉 Đăng nhập thành công!", {
           position: "top-right",
           autoClose: 3000,
@@ -28,10 +27,16 @@ const Login = () => {
           progress: undefined,
           theme: "light",
         });
-        navigate(routes.home);
-        // setTimeout(() => {
-        //   window.location.reload(); // Reload lại trang sau khi điều hướng
-        // }, 0); // Chờ 500ms để navigate xong rồi mới reload
+
+        //console.log(data.role === "STAFF")
+        if (data.role === "ADMIN" || data.role === "MANAGER") {
+          window.location.replace(routes.admin.dashboard);
+        } else if (data.role === "STAFF") {
+          window.location.replace(routes.staff.blog);
+        } else {
+          window.location.replace(routes.home);
+        }
+
       })
       .catch((err) => {
         toast.error(`❌ ${err || "Đăng nhập thất bại!"}`, {

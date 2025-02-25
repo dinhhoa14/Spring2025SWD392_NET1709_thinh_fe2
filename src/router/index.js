@@ -17,6 +17,7 @@ const routes = {
   },
   admin: {
     dashboard: "/admin/dashboard",
+    adminVaccine: "/admin/vaccine"
   },
   staff: {
     blog: "/staff/blog",

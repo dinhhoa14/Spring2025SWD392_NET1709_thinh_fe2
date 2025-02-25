@@ -21,9 +21,11 @@ import LayoutStaff from "@layouts/LayoutStaff.jsx";
 import Blogs from "@containers/staff/Blog/index.jsx";
 import BlogDetail from "@containers/BlogDetail/index.jsx";
 import ServiceList from "@containers/ServiceList/index.jsx";
+import AdminVaccine from "@containers/admin/AdminVaccine/index.jsx";
 
-const user = localStorage.getItem("userDataNhanAi");
-const userRole = JSON.parse(user || '{}').role || 'GUEST';
+const userRole = localStorage.getItem("userRole") || '{}';
+// console.log(userRole)  
+
 const Router = createBrowserRouter(
   [
     {
@@ -60,15 +62,19 @@ const Router = createBrowserRouter(
       ],
     },
     {
-      path: routes.admin.dashboard,
-      element: <ProtectedRoute role={userRole} allowedRoles={['ADMIN', 'MANAGER']} ><LayoutAdmin /></ProtectedRoute>,
-      children: [{ path: routes.admin.dashboard, element: <DashBoardPage /> }],
-    },
-    {
       path: routes.staff.blog.split("/")[1],
       element: <ProtectedRoute role={userRole} allowedRoles={['STAFF']} ><LayoutStaff /></ProtectedRoute>,
       children: [{ path: routes.staff.blog.split("/")[2], element: <Blogs /> }],
     },
+    {
+      path: routes.admin.dashboard.split("/")[1],
+      element: <ProtectedRoute role={userRole} allowedRoles={['ADMIN', 'MANAGER']} ><LayoutAdmin /></ProtectedRoute>,
+      children: [
+        { path: routes.admin.dashboard.split("/")[2], element: <DashBoardPage /> },
+        { path: routes.admin.adminVaccine.split("/")[2], element: <AdminVaccine /> }
+      ],
+    },
+
   ],
   { basename: import.meta.env.BASE_URL }
 );
