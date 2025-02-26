@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, Typography, Grid, Pagination, CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";  
 import { blogService } from "@src/services/blogService.js";
+import routes from "@src/router/index.js";
 
 export default function Blog() {
   const [blogs, setBlogs] = useState([]);
@@ -15,9 +16,9 @@ export default function Blog() {
       setLoading(true);
       try {
         const response = await blogService.getAllBlog(page);
-        console.log(response);
-        setBlogs(response.content);
-        setTotalPages(response.pageable.totalPages);
+        console.log("Response:", response)
+        setBlogs(response.content || []);
+        setTotalPages(response.paging.totalPages);
       } catch (error) {
         console.error("Error fetching blogs:", error);
       } finally {
@@ -29,7 +30,7 @@ export default function Blog() {
   }, [page]);
 
   const handleBlogClick = (id) => {
-    navigate(`/blog/detail/${id}`);
+    navigate(routes.blogDetail.replace(":id", id));
   };
 
   return (

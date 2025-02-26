@@ -33,7 +33,7 @@ const columns = [
 
 export default function BlogTable() {
   const [rows, setRows] = useState([]);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalElements, setTotalElements] = useState(0);
   const [loading, setLoading] = useState(true);

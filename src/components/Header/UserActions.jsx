@@ -12,7 +12,6 @@ const UserActions = () => {
     const user = JSON.parse(localStorage.getItem("userDataNhanAi") || '{}');
     const username = user.fullname || "Người dùng";
     const role = user.role || "GUEST";  // Lấy role từ userData
-    console.log(role)
 
     // Xác định route dựa vào role
     const roleRoutes = {
@@ -23,7 +22,7 @@ const UserActions = () => {
         GUEST: routes.auth.login
     };
 
-    const profileRoute = roleRoutes[role] || routes.auth.login; // Mặc định về login nếu không xác định được role
+    const profileRoute = roleRoutes[role] || routes.auth.login; 
 
     const handleLogout = () => {
         dispatch(logout());

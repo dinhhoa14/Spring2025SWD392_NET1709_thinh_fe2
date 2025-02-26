@@ -10,7 +10,6 @@ import { Modal, Box, Typography, Button } from "@mui/material";
 
 const EditProfileChild = ({ onClose, isOpen, childId }) => {
     const { register, handleSubmit, formState: { errors }, setValue } = useForm();
-    console.log(childId)
     useEffect(() => {
         const fetchChild = async () => {
             const reponse = await userService.getChildById(childId);

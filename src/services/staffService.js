@@ -2,11 +2,11 @@ import axiosClient from "./axiosClient.js";
 
 export const staffService = {
   getAllBlog: async (page, size) => {
-    const response = await axiosClient.get("/api/staff/blogs", {
-      params: { page: page, size: size },
-    });
+    const response = await axiosClient.get(
+      `/api/staff/blogs?page=${page}&size=${size}&sort=created_at&direction=desc`
+    );
     return {
-      content: response.content,
+      content: response.data,
       totalElements: response.totalElements,
     };
   },

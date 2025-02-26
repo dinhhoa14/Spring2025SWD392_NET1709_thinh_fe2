@@ -26,7 +26,6 @@ const RegisterVaccination = () => {
     const fetchChildren = async () => {
       try {
         const response = await userService.getAllChildProfile(idParent);
-        console.log(response)
         setListChild(response);
       } catch (error) {
         console.error(error);
@@ -36,7 +35,6 @@ const RegisterVaccination = () => {
     dispatch(fetchVaccines());
     fetchChildren();
   }, []);
-  // console.log(vaccines)
 
   const onSubmit = (data) => {
     console.log({ selectedChild, selectedVaccines, ...data });
