@@ -7,4 +7,9 @@ const formatDate = (dateString) => {
   }).format(new Date(dateString));
 };
 
-export { formatDate };
+const formatTime = (hour) => {
+  const formattedHour = String(hour).padStart(2, "0");
+  return `${formattedHour}:00:00`;
+};
+
+export { formatDate, formatTime };

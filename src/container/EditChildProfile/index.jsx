@@ -44,6 +44,7 @@ const EditProfileChild = ({ onClose, isOpen, childId }) => {
     const onSubmit = async (data) => {
         const updatedData = {
             ...data,
+            parentName: localStorage.getItem("userName"),
             id: childId, // Giữ lại ID của trẻ để cập nhật
         };
 

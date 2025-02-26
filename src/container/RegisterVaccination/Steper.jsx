@@ -1,6 +1,6 @@
 import { Step, StepLabel, Stepper } from "@mui/material";
 
-const steps = ["Chọn người tiêm", "Chọn vắc xin", "Chọn lịch tiêm"];
+const steps = ["Chọn người tiêm", "Chọn vắc xin", "Xác nhận lại thông tin"];
 
 const StepIndicator = ({ step }) => (
     <Stepper activeStep={step - 1} alternativeLabel >
