@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import authService from "../../services/authService";
+import authService from "../../services/authService.js";
 import { userService } from "@src/services/userService.js";
 
 export const loginUser = createAsyncThunk(
@@ -58,7 +58,7 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.user = action.payload.user;
+        state.user = action.payload; // Lưu toàn bộ user từ API trả về
         state.isAuthenticated = true;
       })
       .addCase(loginUser.rejected, (state, action) => {

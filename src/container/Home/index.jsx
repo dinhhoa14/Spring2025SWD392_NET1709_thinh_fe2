@@ -15,8 +15,10 @@ const Home = () => {
         const timer = setTimeout(() => {
             setIsRendered(true);
         }, 1000);
+        window.scrollTo(0, 0);
 
         return () => clearTimeout(timer); // Xóa timer khi component unmount
+
     }, []);
 
     if (!isRendered) {

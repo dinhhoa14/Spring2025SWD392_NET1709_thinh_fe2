@@ -19,13 +19,14 @@ const RegisterVaccination = () => {
 
 
   useEffect(() => {
-    const Parent = localStorage.getItem("userDataNhanAi");
+    const Parent = localStorage.getItem("user");
     const idParent = JSON.parse(Parent || '{}').id;
 
 
     const fetchChildren = async () => {
       try {
         const response = await userService.getAllChildProfile(idParent);
+        // console.log(response)
         setListChild(response);
       } catch (error) {
         console.error(error);
