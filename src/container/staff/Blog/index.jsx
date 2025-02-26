@@ -25,8 +25,9 @@ import UpdateBlogModal from "../UpdateBlog/index.jsx";
 
 const columns = [
   { id: "title", label: "Tiêu đề", minWidth: 200 },
-  { id: "authorId", label: "Tác giả", minWidth: 150 },
-  { id: "status", label: "Trạng thái", minWidth: 120 },
+  { id: "imageUrl", label: "Hình ảnh", minWidth: 200 },
+  { id: "authorFullName", label: "Tác giả", minWidth: 150 },
+  { id: "blogStatus", label: "Trạng thái", minWidth: 120 },
   { id: "createdAt", label: "Ngày tạo", minWidth: 180 },
   { id: "actions", label: "Hành động", minWidth: 200 },
 ];
@@ -50,7 +51,10 @@ export default function BlogTable() {
     try {
       const blogData = await staffService.getAllBlog(page, rowsPerPage);
       setRows(blogData.content || []);
-      setTotalElements(blogData.totalElements || 0);
+      setTotalElements(blogData.content.totalElements || 0);
+      if (blogData.totalElements === 0) {
+        setPage(0);
+      }
     } catch (error) {
       setError("Failed to fetch blogs. Please try again later.");
       console.error(error);
@@ -118,20 +122,49 @@ export default function BlogTable() {
   };
 
   return (
-    <Paper sx={{ width: "100%", height: "95vh", display: "flex", flexDirection: "column", p: 2 }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2} mr={4}>
-        <Typography variant="h5" fontWeight="bold">Quản lý Blog</Typography>
-        <Button variant="contained" color="primary" onClick={() => setOpenCreateModal(true)}>
+    <Paper
+      sx={{
+        width: "100%",
+        height: "95vh",
+        display: "flex",
+        flexDirection: "column",
+        p: 2,
+      }}
+    >
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={2}
+        mr={4}
+      >
+        <Typography variant="h5" fontWeight="bold">
+          Quản lý Blog
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setOpenCreateModal(true)}
+        >
           Tạo Blog
         </Button>
       </Box>
 
       {loading ? (
-        <div style={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div
+          style={{
+            flex: 1,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <CircularProgress />
         </div>
       ) : error ? (
-        <Typography color="error" align="center">{error}</Typography>
+        <Typography color="error" align="center">
+          {error}
+        </Typography>
       ) : (
         <>
           <TableContainer sx={{ flexGrow: 1 }}>
@@ -139,7 +172,10 @@ export default function BlogTable() {
               <TableHead>
                 <TableRow>
                   {columns.map((column) => (
-                    <TableCell key={column.id} style={{ minWidth: column.minWidth }}>
+                    <TableCell
+                      key={column.id}
+                      style={{ minWidth: column.minWidth }}
+                    >
                       {column.label}
                     </TableCell>
                   ))}
@@ -171,9 +207,22 @@ export default function BlogTable() {
                               Xóa
                             </Button>
                           </TableCell>
+                        ) : column.id === "imageUrl" ? (
+                          <TableCell key={column.id}>
+                            <img
+                              src={value}
+                              alt="Blog Thumbnail"
+                              style={{
+                                width: "100px",
+                                height: "60px",
+                                objectFit: "cover",
+                              }}
+                            />
+                          </TableCell>
                         ) : (
                           <TableCell key={column.id}>
-                            {column.id.includes("createdAt") || column.id.includes("updatedAt")
+                            {column.id.includes("createdAt") ||
+                            column.id.includes("updatedAt")
                               ? new Date(value).toLocaleString()
                               : value}
                           </TableCell>
@@ -196,7 +245,10 @@ export default function BlogTable() {
             component="div"
             count={totalElements}
             rowsPerPage={rowsPerPage}
-            page={page}
+            page={Math.min(
+              page,
+              Math.max(0, Math.ceil(totalElements / rowsPerPage) - 1)
+            )}
             onPageChange={(event, newPage) => setPage(newPage)}
             onRowsPerPageChange={(event) => {
               setRowsPerPage(+event.target.value);
@@ -211,7 +263,8 @@ export default function BlogTable() {
         <DialogTitle>Xác nhận xóa</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Bạn có chắc chắn muốn xóa blog này không? Hành động này không thể hoàn tác.
+            Bạn có chắc chắn muốn xóa blog này không? Hành động này không thể
+            hoàn tác.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -225,10 +278,19 @@ export default function BlogTable() {
       </Dialog>
 
       {/* Modal Tạo Blog */}
-      <CreateBlogModal open={openCreateModal} handleClose={() => setOpenCreateModal(false)} onSubmit={handleCreateBlog} />
+      <CreateBlogModal
+        open={openCreateModal}
+        handleClose={() => setOpenCreateModal(false)}
+        onSubmit={handleCreateBlog}
+      />
 
       {/* Modal Cập nhật Blog */}
-      <UpdateBlogModal open={openUpdateModal} handleClose={() => setOpenUpdateModal(false)} onSubmit={handleUpdateBlog} blogId={currentBlogId} />
+      <UpdateBlogModal
+        open={openUpdateModal}
+        handleClose={() => setOpenUpdateModal(false)}
+        onSubmit={handleUpdateBlog}
+        blogId={currentBlogId}
+      />
     </Paper>
   );
 }
