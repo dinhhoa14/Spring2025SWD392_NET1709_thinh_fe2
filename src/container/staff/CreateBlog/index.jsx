@@ -3,6 +3,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } 
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Import Quill CSS
 import { staffService } from "@src/services/staffService.js"; // Import API Service
+import { fileToCloud } from "@utils/telerealm.js";
 
 export default function CreateBlogModal({ open, handleClose, onSubmit }) {
   const [formData, setFormData] = useState({
@@ -18,10 +19,8 @@ export default function CreateBlogModal({ open, handleClose, onSubmit }) {
   const [errors, setErrors] = useState({ title: "", content: "" });
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("userDataNhanAi"));
-    if (userData && userData.id) {
-      setFormData((prevData) => ({ ...prevData, authorId: userData.id }));
-    }
+    const authorId = localStorage.getItem("userId");
+    setFormData((prevData) => ({ ...prevData, authorId }));
   }, []);
 
   const handleChange = (e) => {
@@ -30,6 +29,23 @@ export default function CreateBlogModal({ open, handleClose, onSubmit }) {
 
   const handleContentChange = (value) => {
     setFormData({ ...formData, content: value });
+  };
+
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      try {
+        console.log("Uploading file:", file);
+        const response = await fileToCloud(file);
+        const imageUrl = response.data.secure_url;
+        console.log("File upload response:", imageUrl);
+        if (response && response.data.secure_url) {
+          setFormData({ ...formData, imageUrl });
+        }
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      }
+    }
   };
 
   const isContentEmpty = (content) => {
@@ -86,7 +102,7 @@ export default function CreateBlogModal({ open, handleClose, onSubmit }) {
         />
 
         <TextField
-          label="Mô tả ngắn"
+          label="Mô tả"
           name="shortDescription"
           fullWidth
           margin="dense"
@@ -94,14 +110,7 @@ export default function CreateBlogModal({ open, handleClose, onSubmit }) {
           onChange={handleChange}
         />
 
-        <TextField
-          label="URL Hình ảnh"
-          name="imageUrl"
-          fullWidth
-          margin="dense"
-          value={formData.imageUrl}
-          onChange={handleChange}
-        />
+        <input type="file" title="Upload Image" onChange={handleFileChange} />
 
         <ReactQuill
           theme="snow"
