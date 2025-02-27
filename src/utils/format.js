@@ -12,4 +12,14 @@ const formatTime = (hour) => {
   return `${formattedHour}:00:00`;
 };
 
-export { formatDate, formatTime };
+function formatMoney(amount) {
+  if (isNaN(amount) || amount === null || amount === undefined) {
+    return "";
+  }
+  return amount.toLocaleString("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
+}
+
+export { formatDate, formatTime, formatMoney };

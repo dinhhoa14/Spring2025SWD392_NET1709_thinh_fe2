@@ -18,17 +18,15 @@ export default function UpdateBlogModal({ open, handleClose, blogId, onSubmit })
     authorId: "",
     title: "",
     content: "",
-    status: "DRAFT", // Thêm status với giá trị mặc định là DRAFT
   });
-  const [loading, setLoading] = useState(false); // Trạng thái loading
-  const [error, setError] = useState(""); // Lưu lỗi nếu có
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  // Lấy thông tin blog chi tiết khi modal mở và blogId thay đổi
   useEffect(() => {
     const fetchBlogDetails = async () => {
       if (blogId) {
         setLoading(true);
-        setError(""); // Reset error
+        setError("");
         try {
           const response = await staffService.getDetailBlog(blogId);
           setFormData({
@@ -55,7 +53,6 @@ export default function UpdateBlogModal({ open, handleClose, blogId, onSubmit })
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Xử lý thay đổi nội dung Quill Editor
   const handleContentChange = (value) => {
     setFormData({ ...formData, content: value });
   };
@@ -63,7 +60,7 @@ export default function UpdateBlogModal({ open, handleClose, blogId, onSubmit })
   const isContentEmpty = (content) => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(content, "text/html");
-    return !doc.body.textContent.trim(); // Kiểm tra nếu nội dung chỉ có thẻ rỗng
+    return !doc.body.textContent.trim();
   };
 
   const handleSubmit = async () => {

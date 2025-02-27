@@ -54,9 +54,12 @@ const RegisterVaccination = () => {
 
     const register = {
       vaccinationRecordId: selectedChild.id,
-      vaccines: selectedVaccines.map((vaccine) => ({ vaccineId: vaccine.id })),
+      vaccines:
+        selectedVaccines.length > 1
+          ? selectedVaccines.map((vaccine) => ({ vaccineId: vaccine.id }))
+          : null,
       vaccinePackageId:
-        selectedVaccines.length < 2 ? selectedVaccines[0]?.id : null, 
+        selectedVaccines.length < 2 ? selectedVaccines[0]?.id : null,
       scheduleDate: data.date,
       timeFrom: formatTime(data.time),
       notes: data.notes,
@@ -67,7 +70,7 @@ const RegisterVaccination = () => {
     try {
       const response = await appointmentService.createAppointment(register);
       if (response) {
-        toast.success("🎉 Đăng ký hồ sơ thành công!")
+        toast.success("🎉 Đăng ký hồ sơ thành công!");
         navigate(routes.home);
       } else {
         toast.error("❌ Đăng ký hồ sơ thất bại!");

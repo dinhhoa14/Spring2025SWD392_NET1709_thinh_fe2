@@ -73,7 +73,7 @@ const Login = () => {
           </div>
           {errors.password && <span className="text-red-500 text-sm">{errors.password.message}</span>}
 
-          <button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-lg font-semibold transition" disabled={status === "loading"}>
+          <button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-lg font-semibold transition cursor-pointer" disabled={status === "loading"}>
             {status === "Chờ..." ? "Đang đăng nhập..." : "Đăng nhập"}
           </button>
         </form>

@@ -19,4 +19,5 @@ export const blogService = {
     const response = await axiosClient.get(`/api/staff/blog?blogId=${id}`);
     return response;
   },
+  
 };

@@ -1,4 +1,5 @@
 import TextField from "@components/TextField/index.tsx";
+import { formatMoney } from "@utils/format.js";
 
 const ConfirmInfo = ({ selectedChild, selectedVaccines, values }) => (
   <div>
@@ -45,9 +46,9 @@ const ConfirmInfo = ({ selectedChild, selectedVaccines, values }) => (
             {selectedVaccines.map((vaccine, index) => (
               <tr key={vaccine.id} className="bg-white text-black">
                 <td className="border border-gray-300 px-4 py-2">{index + 1}</td>
-                <td className="border border-gray-300 px-4 py-2">{vaccine.vaccineName}</td>
+                <td className="border border-gray-300 px-4 py-2">{vaccine.vaccineName || vaccine.name}</td>
                 <td className="border border-gray-300 px-4 py-2">
-                  {vaccine.pricePerDose.toLocaleString("vi-VN")} VNĐ
+                  {formatMoney(vaccine.pricePerDose) || formatMoney(vaccine.totalPrice)}
                 </td>
               </tr>
             ))}
