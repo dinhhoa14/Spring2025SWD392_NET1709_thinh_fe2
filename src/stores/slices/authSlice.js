@@ -14,15 +14,15 @@ export const loginUser = createAsyncThunk(
 );
 
 export const registerUser = createAsyncThunk(
-  'auth/register',
+  "auth/register",
   async (credentials, { rejectWithValue }) => {
     try {
       return await authService.register(credentials);
     } catch (error) {
-      return rejectWithValue(error)
+      return rejectWithValue(error);
     }
   }
-)
+);
 
 export const fetchUser = createAsyncThunk(
   "auth/getMe",

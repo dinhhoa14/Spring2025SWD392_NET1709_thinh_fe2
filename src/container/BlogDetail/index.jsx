@@ -11,14 +11,14 @@ export default function BlogDetail() {
     const fetchBlogDetail = async () => {
       try {
         const response = await blogService.getDetailBlog(id);
-        setBlog(response);
-        console.log(response.content);
+        setBlog(response.data);
       } catch (error) {
         console.error("Error fetching blog detail:", error);
       }
     };
 
     fetchBlogDetail();
+    window.scrollTo(0, 0);
   }, [id]);
 
   return (

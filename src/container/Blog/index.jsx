@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, Typography, Grid, Pagination, CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";  
 import { blogService } from "@src/services/blogService.js";
+import routes from "@src/router/index.js";
 
 export default function Blog() {
   const [blogs, setBlogs] = useState([]);
@@ -15,9 +16,8 @@ export default function Blog() {
       setLoading(true);
       try {
         const response = await blogService.getAllBlog(page);
-        console.log(response);
-        setBlogs(response.content);
-        setTotalPages(response.pageable.totalPages);
+        setBlogs(response.content || []);
+        setTotalPages(response.totalPages);
       } catch (error) {
         console.error("Error fetching blogs:", error);
       } finally {
@@ -29,7 +29,7 @@ export default function Blog() {
   }, [page]);
 
   const handleBlogClick = (id) => {
-    navigate(`/blog/detail/${id}`);
+    navigate(routes.blogDetail.replace(":id", id));
   };
 
   return (
@@ -43,12 +43,12 @@ export default function Blog() {
           <Grid container spacing={4}>
             {blogs.map((blog) => (
               <Grid item xs={12} key={blog.id}>
-                <Card onClick={() => handleBlogClick(blog.id)} className="cursor-pointer">
+                <Card onClick={() => handleBlogClick(blog.blogId)} className="cursor-pointer">
                   <Grid container>
                     {/* Image section */}
                     <Grid item xs={5} className="h-64 bg-gray-300">
                       <img 
-                        src="https://cdn.nhathuoclongchau.com.vn/unsafe/1440x0/filters:quality(90)/https://cms-prod.s3-sgn09.fptcloud.com/sau_khi_tiem_vac_xin_bao_lau_thi_duoc_mang_thai_giai_dap_chi_tiet_2_b92700b13b.png" 
+                        src={blog.imageUrl} 
                         alt={blog.title} 
                         className="object-cover w-full h-full"
                       />

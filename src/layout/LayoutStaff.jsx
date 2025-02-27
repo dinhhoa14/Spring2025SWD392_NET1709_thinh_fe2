@@ -13,7 +13,7 @@ const LayoutStaff = () => {
         <div>
 
             <main className="flex">
-                <div className="w-48">
+                <div className="md:w-3/12 sm:w-1/12  min-h-screen sticky top-0">
                     <Sidebar />
                 </div>
                 <div className="w-screen container mx-6 mt-6 shadow-2xl bg-slate-100">

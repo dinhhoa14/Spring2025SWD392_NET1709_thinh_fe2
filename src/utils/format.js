@@ -7,4 +7,19 @@ const formatDate = (dateString) => {
   }).format(new Date(dateString));
 };
 
-export { formatDate };
+const formatTime = (hour) => {
+  const formattedHour = String(hour).padStart(2, "0");
+  return `${formattedHour}:00:00`;
+};
+
+function formatMoney(amount) {
+  if (isNaN(amount) || amount === null || amount === undefined) {
+    return "";
+  }
+  return amount.toLocaleString("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
+}
+
+export { formatDate, formatTime, formatMoney };

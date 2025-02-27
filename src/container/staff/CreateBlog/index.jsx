@@ -3,53 +3,67 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } 
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Import Quill CSS
 import { staffService } from "@src/services/staffService.js"; // Import API Service
+import { fileToCloud } from "@utils/telerealm.js";
 
 export default function CreateBlogModal({ open, handleClose, onSubmit }) {
   const [formData, setFormData] = useState({
-    authorId: "",
+    authorId: "", 
+    shortDescription: "",
+    imageUrl: "",
     title: "",
     content: "",
     status: "DRAFT",
   });
 
-  const [loading, setLoading] = useState(false); // Trạng thái loading
-  const [errors, setErrors] = useState({ title: "", content: "" }); // Lưu lỗi cho từng trường
+  const [loading, setLoading] = useState(false); 
+  const [errors, setErrors] = useState({ title: "", content: "" });
 
-  // Lấy authorId từ localStorage khi component render
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("userDataNhanAi"));
-    if (userData && userData.id) {
-      setFormData((prevData) => ({ ...prevData, authorId: userData.id }));
-    }
+    const authorId = localStorage.getItem("userId");
+    setFormData((prevData) => ({ ...prevData, authorId }));
   }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Xử lý thay đổi nội dung Quill Editor
   const handleContentChange = (value) => {
     setFormData({ ...formData, content: value });
+  };
+
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      try {
+        console.log("Uploading file:", file);
+        const response = await fileToCloud(file);
+        const imageUrl = response.data.secure_url;
+        console.log("File upload response:", imageUrl);
+        if (response && response.data.secure_url) {
+          setFormData({ ...formData, imageUrl });
+        }
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      }
+    }
   };
 
   const isContentEmpty = (content) => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(content, "text/html");
-    return !doc.body.textContent.trim(); // Kiểm tra nếu nội dung chỉ có thẻ rỗng
+    return !doc.body.textContent.trim();
   };
 
   const handleSubmit = async () => {
     setLoading(true);
-    setErrors({ title: "", content: "" }); // Reset lỗi
+    setErrors({ title: "", content: "" });
 
     let formErrors = {};
 
-    // Kiểm tra tiêu đề
     if (!formData.title.trim()) {
       formErrors.title = "Tiêu đề không được để trống!";
     }
 
-    // Kiểm tra nội dung
     if (isContentEmpty(formData.content)) {
       formErrors.content = "Nội dung không được để trống!";
     }
@@ -81,10 +95,22 @@ export default function CreateBlogModal({ open, handleClose, onSubmit }) {
           name="title"
           fullWidth
           margin="dense"
+          value={formData.title}
           onChange={handleChange}
           error={!!errors.title}
           helperText={errors.title}
         />
+
+        <TextField
+          label="Mô tả"
+          name="shortDescription"
+          fullWidth
+          margin="dense"
+          value={formData.shortDescription}
+          onChange={handleChange}
+        />
+
+        <input type="file" title="Upload Image" onChange={handleFileChange} />
 
         <ReactQuill
           theme="snow"
