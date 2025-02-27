@@ -3,11 +3,14 @@ import axiosClient from "./axiosClient.js";
 export const staffService = {
   getAllBlog: async (page, size) => {
     const response = await axiosClient.get(
-      `/api/staff/blogs?page=${page}&size=${size}&sort=created_at&direction=desc`
+      `/api/staff/blogs?page=${
+        page - 1
+      }&size=${size}&sort=created_at&direction=desc`
     );
+    console.log(response);
     return {
-      content: response.data,
-      totalElements: response.totalElements,
+      content: response.data.content,
+      totalElements: response.data.totalElements,
     };
   },
   getDetailBlog: async (id) => {

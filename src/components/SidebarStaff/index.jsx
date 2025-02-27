@@ -17,12 +17,12 @@ const Sidebar = () => {
     // Danh sách chức năng với icon và đường dẫn
     const listFunctions = [
         { name: 'Check-in', icon: <FaRegCalendarCheck size={20} />, path: '/admin' },
-        { name: 'Blog', icon: <FaBlog size={20} />, path: '/users' },
+        { name: 'Blog', icon: <FaBlog size={20} />, path: routes.staff.blog },
         { name: 'Xem lịch tiêm', icon: <FaCalendarAlt size={20} />, path: '/vaccination' },
     ];
 
     return (
-        <div className="h-screen bg-gradient-to-b text-blue-400 shadow-lg flex flex-col">
+        <div className="min-h-screen bg-gradient-to-b text-blue-400 shadow-lg flex flex-col">
             <div className='mt-3'>
                 <div className="flex items-center justify-center gap-2 px-2 cursor-pointer mlg:w-full">
                     <Link to="/">

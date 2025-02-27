@@ -5,10 +5,11 @@ const authService = {
   login: async (credentials) => {
     const response = await axiosClient.post("/api/auth/signin", credentials);
     if (response.data) {
-      const { token, role, fullname, ...userData } = response.data;
+      const { token, role, fullname, id, ...userData } = response.data;
       localStorage.setItem("accessToken", token);
       localStorage.setItem("userRole", role);
       localStorage.setItem("userName", fullname);
+      localStorage.setItem("userId", id);
       localStorage.setItem("user", JSON.stringify(userData)); // Lưu toàn bộ user
     }
     return response.data; // Trả về user data

@@ -31,7 +31,7 @@ const SelectChild = ({ listChild, setSelectedChild, selectedChild }) => (
                     </div>
                     <div className="grid grid-cols-3  gap-6 text-left">
 
-                        <TextField title="Giới tính" data={selectedChild.childGender === "Male" ? "Nam" : "Nữ"} />
+                        <TextField title="Giới tính" data={selectedChild.childGender === "M" ? "Nam" : "Nữ"} />
                         <TextField title="Ngày tháng năm sinh" data={formatDate(selectedChild.dateOfBirth)} />
                         <TextField title="Nơi sinh" data={selectedChild.birthPlace} />
                     </div>

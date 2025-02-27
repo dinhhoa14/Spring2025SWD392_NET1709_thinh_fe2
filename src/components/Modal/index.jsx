@@ -7,8 +7,7 @@ const ChangePasswordModal = ({ isOpen, onClose }) => {
 
   const onSubmit = (data) => {
     console.log("Password Change Data:", data);
-    // Gửi API đổi mật khẩu tại đây
-    onClose(); // Đóng modal sau khi gửi thành công
+    onClose();
   };
 
   return (

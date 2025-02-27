@@ -27,7 +27,7 @@ const UserActions = () => {
         GUEST: routes.auth.login
     };
 
-    const profileRoute = roleRoutes[role] || routes.auth.login; // Mặc định về login nếu không xác định được role
+    const profileRoute = roleRoutes[role] || routes.auth.login; 
 
     const handleLogout = () => {
         dispatch(logout());
